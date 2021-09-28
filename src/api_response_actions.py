@@ -4,7 +4,7 @@ import logging
 import jsonpath_rw
 
 
-class ResponseActions():
+class ResponseActions(object):
     # https://jsonpath.com
     # https://goessner.net/articles/JsonPath/
     # https://jsonpath-rw.readthedocs.io/
@@ -69,6 +69,14 @@ class ResponseActions():
             logging.info(f"No")
             assert False, f"No"
 
+    def json_body_check_full(self, response_body, check_json):
+        try:
+            logging.info(f"Check value in response body")
+            json = response_body.json()
+            assert json == check_json
+        except AssertionError:
+            logging.info(f"Jsons aren't qual\nResponse json:\n{json}\nChecking json:\n{check_json}")
+            assert False, f"No"
 
     def value_in_body_from_list_by_path(self, response, json_path, check_value):
         logging.info(f"Check value in key: {json_path}")

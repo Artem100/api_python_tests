@@ -2,7 +2,7 @@ import allure
 
 from src.api_response_actions import ResponseActions
 from src.api_services import UsersApi
-from src.json import Json
+from src.json_bodies import Json
 
 
 class TestApi:
@@ -35,3 +35,17 @@ class TestApi:
         ResponseActions().check_value_by_path(response, "$.name", name)
         ResponseActions().check_value_by_path(response, "$.job", job)
         ResponseActions().check_value_more_null(response, "$.id")
+
+    @allure.title("Get user")
+    def test_04(self):
+        user_id = 2
+        check_body = Json.view_single_user_json(id=user_id, email="janet.weaver@reqres.in", first_name = "Janet",
+                                               last_name="Weaver", avatar="https://reqres.in/img/faces/2-image.jpg",
+                                               support_url="https://reqres.in/#support-heading",
+                                               text="To keep ReqRes free, contributions towards server costs are appreciated!")
+
+        response = UsersApi().view_single_user(str(user_id))
+        ResponseActions().status_code_check(response)
+        ResponseActions().json_body_check_full(response, check_body)
+
+
