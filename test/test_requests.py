@@ -31,7 +31,7 @@ class TestApi:
         # Look how to do with jsonpath-rw
         ResponseActions().value_in_body_from_list_by_path(response, "$.data[*].last_name", last_name)
 
-    @allure.title("Create user")
+    @allure.title("Create new user")
     def test_03(self, faker_fixture):
         name = faker_fixture.word()
         job = faker_fixture.name()
@@ -41,7 +41,7 @@ class TestApi:
         ResponseActions().check_value_by_path(response, "$.job", job)
         ResponseActions().check_value_more_null(response, "$.id")
 
-    @allure.title("Get user")
+    @allure.title("Get info about user and check all fields")
     def test_04(self):
         user_id = 2
         check_body = Json.view_single_user_json(id=user_id, email="janet.weaver@reqres.in", first_name = "Janet",
