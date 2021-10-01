@@ -1,8 +1,13 @@
+import json
+import os
+
 import allure
 
+from conftest import ROOT_DIR
 from src.api_response_actions import ResponseActions
 from src.api_services import UsersApi
 from src.json_bodies import Json
+from jsonschema import validate
 
 
 class TestApi:
@@ -47,5 +52,12 @@ class TestApi:
         response = UsersApi().view_single_user(str(user_id))
         ResponseActions().status_code_check(response)
         ResponseActions().json_body_check_full(response, check_body)
+
+    @allure.title("Validate JsonSchema")
+    def test_05(self):
+        user_id = 2
+        response = UsersApi().view_single_user(str(user_id))
+        ResponseActions.validate_json_body(response, "\\validate.json")
+
 
 

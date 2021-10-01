@@ -6,3 +6,4 @@ openpyxl == 3.0.7
 requests == 2.25.1
 python-dotenv == 0.18.0
 jsonpath-rw == 1.4.0
+jsonschema == 4.0.1
