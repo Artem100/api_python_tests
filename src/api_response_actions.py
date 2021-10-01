@@ -100,8 +100,8 @@ class ResponseActions(object):
             assert False, f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'"
 
     @staticmethod
-    def validate_json_body(response, file_name):
-        path_file = os.path.join((ROOT_DIR + file_name))
+    def validate_json_body(response_json, file_name_schema):
+        path_file = os.path.join((ROOT_DIR + file_name_schema))
         with open(path_file) as f:
-            validate(instance=response.json(), schema=json.loads(f.read()))
+            validate(instance=response_json.json(), schema=json.loads(f.read()))
 
