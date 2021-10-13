@@ -1,11 +1,9 @@
-FROM python:3.8.12-alpine3.14
+FROM python:3.7.12
 
-RUN pip install --upgrade pip
+WORKDIR /usr/src/app
 
-RUN adduser -D worker
-USER worker
-WORKDIR /home/worker
+COPY . .
 
-COPY --chown=worker:worker . .
+FROM maven:3.8-ibmjava-8
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN java -version
