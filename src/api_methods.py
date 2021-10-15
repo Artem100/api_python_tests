@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+
+import allure
 import requests
 
 from dotenv import load_dotenv
@@ -15,6 +17,8 @@ class ApiMethods():
             self._api_url = str(os.getenv("URL_ENV"))
 
     def logger_for_api(self, response):
+        allure.attach("Request: \n url= {} \n header= {} \n body= {}".format(response.request.url, response.request.headers, json.dumps(response.request.body, indent=4)),
+                      'request.txt', allure.attachment_type.TEXT)
         logging.info("Request: \n url= {} \n header= {} \n body= {}".format(response.request.url, response.request.headers, json.dumps(response.request.body, indent=4)))
         logging.info("Response: \n status={} \n header={} \n body={}".format(response.status_code, response.headers, json.dumps(response.json(), indent = 4)))
 
@@ -33,10 +37,10 @@ class ApiMethods():
         self.logger_for_api(response)
         return response
 
-    def _post_method(self, url, body, cookies="No", params=""):
+    def _post_method(self, url, body, cookies="No", params="", content_type='application/json'):
         logging.info("Method: POST")
         url_request = str(self._api_url + url)
-        # headers = {'content-type': content_type}
+        headers = {'content-type': content_type}
         if cookies != "No":
             headers['Cookie'] = "language=en-gb; currency=USD; OCSESSID={}".format(cookies)
         else:

@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+
+import allure
 from jsonschema import validate
 
 import jsonpath_rw
@@ -15,6 +17,7 @@ class ResponseActions(object):
 
 
     # Пример без использования плагина *jsonpath-rw*
+    @allure.step
     def history_response_json(self, response, vessel, location, rotation_date):
         data = json.loads(response.text)
         data_json = json.dumps(data, indent=2)
@@ -36,6 +39,7 @@ class ResponseActions(object):
             logging.error(f"Fail by reason: {e}\nResponse body: {data_json}")
             assert False, f"Fail by reason: {e}"
 
+    @allure.step
     def status_code_check(self, response, expected_code=200):
         logging.info(f"Check status is code: {expected_code}")
         if response.status_code == expected_code:
@@ -44,7 +48,7 @@ class ResponseActions(object):
             logging.info(f"Incorrect status code. \nExpected value: 200,\n  Actual value: {response.status_code}")
             raise AssertionError(f"Incorrect status code. \nExpected value: 200,\n  Actual value: {response.status_code}")
 
-
+    @allure.step
     def check_value_by_path(self, response, json_path, check_value):
         logging.info(f"Check value in key: {json_path}")
         try:
@@ -59,6 +63,7 @@ class ResponseActions(object):
             logging.info(f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value}'")
             assert False, f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value}'"
 
+    @allure.step
     def check_value_more_null(self, response, json_path):
         logging.info(f"Check value in key: {json_path}")
         try:
@@ -73,6 +78,7 @@ class ResponseActions(object):
             logging.info(f"No")
             assert False, f"No"
 
+    @allure.step
     def json_body_check_full(self, response_body, check_json):
         try:
             logging.info(f"Check value in response body")
@@ -82,6 +88,7 @@ class ResponseActions(object):
             logging.info(f"Jsons aren't qual\nResponse json:\n{json}\nChecking json:\n{check_json}")
             assert False, f"No"
 
+    @allure.step
     def value_in_body_from_list_by_path(self, response, json_path, check_value):
         logging.info(f"Check value in key: {json_path}")
         try:
@@ -99,6 +106,7 @@ class ResponseActions(object):
             logging.info(f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'")
             assert False, f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'"
 
+    @allure.step
     @staticmethod
     def validate_json_body(response_json, file_name_schema):
         path_file = os.path.join((ROOT_DIR + file_name_schema))
