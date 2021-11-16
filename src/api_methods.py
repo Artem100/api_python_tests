@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 class ApiMethods():
 
+    proxy = {"http": "192.168.0.103:8080", "https": "192.168.0.103:8080"}
+
     def __init__(self):
         if "URL_ENV" in os.environ:
             self._api_url = os.environ["URL_ENV"]
@@ -27,43 +29,38 @@ class ApiMethods():
         logging.info(f"Credentials for API request:\nusername:{username}")
         return self
 
-    def _get_method(self, url, content_type='application/json', cookies="No", params=""):
+    def _get_method(self, url, headers=None, cookies="No", params=None):
         logging.info("Method: GET")
         url_request = self._api_url+url
-        headers = {'content-type': content_type}
         if cookies != "No":
             headers['Cookie'] = "language=en-gb; currency=USD; OCSESSID={}".format(cookies)
         response = requests.request("GET", url_request, headers=headers, params=params)
         self.logger_for_api(response)
         return response
 
-    def _post_method(self, url, body, cookies="No", params="", content_type='application/json'):
+    def _post_method(self, url, body, cookies="No", params=None, headers=None, proxy=None):
         logging.info("Method: POST")
         url_request = str(self._api_url + url)
-        headers = {'content-type': content_type}
         if cookies != "No":
             headers['Cookie'] = "language=en-gb; currency=USD; OCSESSID={}".format(cookies)
-        else:
-            response = requests.request("POST", url_request, data=body, params=params)
+        response = requests.request("POST", url_request, headers=headers, data=body, params=params, proxies=proxy)
         self.logger_for_api(response)
         return response
 
-    def _put_method(self, url, body, content_type='application/json', cookies="No"):
+    def _put_method(self, url, body, headers=None, params=None, cookies="No", proxy=None):
         logging.info("Method: PUT")
         url_request = str(self._api_url + url)
-        headers = {'content-type': content_type}
         if cookies != "No":
             headers['Cookie'] = "language=en-gb; currency=USD; OCSESSID={}".format(cookies)
-        response = requests.request("POST", url_request, headers=headers, data=body)
+        response = requests.request("POST", url_request, headers=headers, data=body, params=params, proxies=proxy)
         self.logger_for_api(response)
         return response
 
-    def _delete_method(self, url, content_type='application/json', cookies="No"):
+    def _delete_method(self, url, headers=None, params=None, cookies="No", proxy=None):
         logging.info("Method: DELETE")
         url_request = str(self._api_url + url)
-        headers = {'content-type': content_type}
         if cookies != "No":
             headers['Cookie'] = "language=en-gb; currency=USD; OCSESSID={}".format(cookies)
-        response = requests.request("POST", url_request, headers=headers)
+        response = requests.request("POST", url_request, headers=headers, params=params, proxies=proxy)
         self.logger_for_api(response)
         return response

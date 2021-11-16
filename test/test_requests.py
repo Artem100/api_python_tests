@@ -21,15 +21,23 @@ class TestApi:
         first_name_list = [d['first_name'] for d in response.json()['data']]
         # print(first_name_list)
 
-    @allure.title("Check last_name value in response body")
-    def test_02(self):
+    # @allure.title("Check last_name value in response body use jsonpath-rw")
+    # def test_02_1(self):
+    #     last_name = "Ferguson"
+    #     response = UsersApi().getUsersPagesList(2)
+    #     type(response)
+    #     ResponseActions().status_code_check(response, 200)
+    #     # Look how to do with jsonpath-rw
+    #     ResponseActions().value_in_body_from_list_by_path(response, "$.data[*].last_name", last_name)
+
+    @allure.title("Check last_name value in response body user use generator")
+    def test_02_2(self):
         last_name = "Ferguson"
-        response = UsersApi().getUsersPagesList("2")
+        response = UsersApi().getUsersPagesList(2)
+        type(response)
         ResponseActions().status_code_check(response, 200)
-        # If we want to use generator
         first_name_list = [d['last_name'] for d in response.json()['data']]
-        # Look how to do with jsonpath-rw
-        ResponseActions().value_in_body_from_list_by_path(response, "$.data[*].last_name", last_name)
+        print(first_name_list)
 
     @allure.title("Create new user")
     def test_03(self, faker_fixture):
@@ -52,12 +60,5 @@ class TestApi:
         response = UsersApi().view_single_user(str(user_id))
         ResponseActions().status_code_check(response)
         ResponseActions().json_body_check_full(response, check_body)
-
-    @allure.title("Validate JsonSchema")
-    def test_05(self):
-        user_id = 2
-        response = UsersApi().view_single_user(str(user_id))
-        ResponseActions.validate_json_body(response, "\\validate.json")
-
 
 

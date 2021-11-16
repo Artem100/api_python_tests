@@ -4,14 +4,14 @@ from src.api_methods import ApiMethods
 
 
 class UsersApi(ApiMethods):
+
     url = f"users/"
 
     @allure.step
-    def getUsersPagesList(self, num_page: str):
+    def getUsersPagesList(self, num_page):
         # User parametr in url ?page={num_page}
-        # url = f"api/users?page={num_page}"
         params = {'page': num_page}
-        response = self._get_method(self.url, content_type="application/x-www-form-urlencoded; charset=UTF-8", params=params)
+        response = self._get_method(self.url, params=params)
         return response
 
     @allure.step
