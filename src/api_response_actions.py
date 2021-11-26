@@ -108,8 +108,8 @@ class ResponseActions(object):
             logging.error(f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'")
             assert False, f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'"
 
-    @allure.step
     @staticmethod
+    @allure.step
     def validate_json_body(response_json, file_name_schema):
         path_file = os.path.join((ROOT_DIR + file_name_schema))
         with open(path_file) as f:

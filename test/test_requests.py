@@ -61,4 +61,10 @@ class TestApi:
         ResponseActions().status_code_check(response)
         ResponseActions().json_body_check_full(response, check_body)
 
+    @allure.title("Validate JsonSchema")
+    def test_05(self):
+        user_id = 2
+        response = UsersApi().view_single_user(str(user_id))
+        ResponseActions.validate_json_body(response, "\\validate.json")
+
 

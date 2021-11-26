@@ -29,12 +29,12 @@ class ApiMethods():
         logging.info(f"Credentials for API request:\nusername:{username}")
         return self
 
-    def _get_method(self, url, headers=None, cookies="No", params=None, proxy=proxy):
+    def _get_method(self, url, headers=None, cookies="No", params=None, proxy=None):
         logging.info("Method: GET")
         url_request = self._api_url+url
         if cookies != "No":
             headers['Cookie'] = "language=en-gb; currency=USD; OCSESSID={}".format(cookies)
-        response = requests.request("GET", url_request, headers=headers, params=params, proxies=proxy, verify=False)
+        response = requests.request("GET", url_request, headers=headers, params=params, proxies=proxy)
         self.logger_for_api(response)
         return response
 
